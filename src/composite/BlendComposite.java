@@ -608,7 +608,29 @@ public final class BlendComposite implements Composite {
 					}
 				};
 			case SOFT_LIGHT:
-				break;
+				// http://en.wikipedia.org/wiki/Blend_modes#Soft_Light
+				return new Blender() {
+					@Override
+					public int[] blend(int[] src, int[] dst) {
+						float fSrc[] = new float[] {(float)src[0] / (float)255, (float)src[1] / (float)255, (float)src[2] / (float)255, (float)src[3] / (float)255};
+						float fDst[] = new float[] {(float)dst[0] / (float)255, (float)dst[1] / (float)255, (float)dst[2] / (float)255, (float)dst[3] / (float)255};
+						
+						return new int[] {
+								(int) ((fDst[0] <= 0.5f ? (fSrc[0] - (1.0f - (2.0f * fDst[0])) * fSrc[0] * (1.0f - fSrc[0]))
+										: (fSrc[0] + ((2.0f * fDst[0] - 1.0f) * ((fSrc[0] <= 0.25f ? (((((16.0f * fSrc[0]) - 12.0f) * fSrc[0]) + 4.0f) * fSrc[0])
+												: ((float) Math.sqrt(fSrc[0]))) - fSrc[0])))) * 255.0f),
+								(int) ((fDst[1] <= 0.5f ? (fSrc[1] - (1.0f - (2.0f * fDst[1])) * fSrc[1] * (1.0f - fSrc[1]))
+										: (fSrc[1] + ((2.0f * fDst[1] - 1.0f) * ((fSrc[1] <= 0.25f ? (((((16.0f * fSrc[1]) - 12.0f) * fSrc[1]) + 4.0f) * fSrc[1])
+												: ((float) Math.sqrt(fSrc[1]))) - fSrc[1])))) * 255.0f),
+								(int) ((fDst[2] <= 0.5f ? (fSrc[2] - (1.0f - (2.0f * fDst[2])) * fSrc[2] * (1.0f - fSrc[2]))
+										: (fSrc[2] + ((2.0f * fDst[2] - 1.0f) * ((fSrc[2] <= 0.25f ? (((((16.0f * fSrc[2]) - 12.0f) * fSrc[2]) + 4.0f) * fSrc[2])
+												: ((float) Math.sqrt(fSrc[2]))) - fSrc[2])))) * 255.0f),
+								(int) ((fDst[3] <= 0.5f ? (fSrc[3] - (1.0f - (2.0f * fDst[3])) * fSrc[3] * (1.0f - fSrc[3]))
+										: (fSrc[3] + ((2.0f * fDst[3] - 1.0f) * ((fSrc[3] <= 0.25f ? (((((16.0f * fSrc[3]) - 12.0f) * fSrc[3]) + 4.0f) * fSrc[3])
+												: ((float) Math.sqrt(fSrc[3]))) - fSrc[3])))) * 255.0f)
+						};
+					}
+				};
 			case STAMP:
 				return new Blender() {
 					@Override

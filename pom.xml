@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>BlendComposites</groupId>
 	<artifactId>BlendComposites</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0-SNAPSHOT</version>
 	<name>BlendComposites</name>
 	<description>BlendComposites by Romain Guy shared at http://www.curious-creature.org/2006/09/20/new-blendings-modes-for-java2d/ and ported to work with gae2d. Currently blending PNGs only.</description>
 	<build>

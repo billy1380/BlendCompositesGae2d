@@ -28,16 +28,15 @@
 //	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package composite.desktop;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.sanselan.ImageFormat;
-import org.apache.sanselan.ImageWriteException;
-import org.apache.sanselan.Sanselan;
-
-import com.jgraph.gaeawt.java.awt.Graphics2D;
-import com.jgraph.gaeawt.java.awt.image.BufferedImage;
+import org.apache.commons.imaging.ImageFormats;
+import org.apache.commons.imaging.ImageWriteException;
+import org.apache.commons.imaging.Imaging;
 
 import composite.BlendComposite;
 import composite.GraphicsUtil;
@@ -53,17 +52,21 @@ public class Program {
 	 * @throws IOException
 	 * @throws ImageWriteException
 	 */
-	public static void main(String[] args) throws IOException, ImageWriteException {
-		BufferedImage imageA = GraphicsUtil.loadCompatibleImage(Program.class.getResource("/composite/images/A.png"));
-		BufferedImage imageB = GraphicsUtil.loadCompatibleImage(Program.class.getResource("/composite/images/B.png"));
-		BufferedImage image = new BufferedImage(imageA.getWidth(), imageA.getHeight(), BufferedImage.TYPE_INT_ARGB);
+	public static void main (String[] args)
+			throws IOException, ImageWriteException {
+		BufferedImage imageA = GraphicsUtil.loadCompatibleImage(
+				Program.class.getResource("/composite/images/A.png"));
+		BufferedImage imageB = GraphicsUtil.loadCompatibleImage(
+				Program.class.getResource("/composite/images/B.png"));
+		BufferedImage image = new BufferedImage(imageA.getWidth(),
+				imageA.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = image.createGraphics();
 		g2.drawImage(imageA, 0, 0, null);
 		g2.setComposite(BlendComposite.ColorBurn);
 		g2.drawImage(imageB, 0, 0, null);
 		g2.dispose();
 		OutputStream out = new FileOutputStream("image.png");
-		Sanselan.writeImage(image, out, ImageFormat.IMAGE_FORMAT_PNG, null);
+		Imaging.writeImage(image, out, ImageFormats.PNG, null);
 
 	}
 

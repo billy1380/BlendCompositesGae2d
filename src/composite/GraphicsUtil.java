@@ -27,21 +27,20 @@
 
 package composite;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
-import org.apache.sanselan.ImageReadException;
-import org.apache.sanselan.Sanselan;
-
-import com.jgraph.gaeawt.java.awt.Graphics2D;
-import com.jgraph.gaeawt.java.awt.RenderingHints;
-import com.jgraph.gaeawt.java.awt.image.BufferedImage;
+import org.apache.commons.imaging.ImageReadException;
+import org.apache.commons.imaging.Imaging;
 
 public class GraphicsUtil {
 	// private static GraphicsConfiguration configuration =
 	// GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 
-	private GraphicsUtil() {}
+	private GraphicsUtil () {}
 
 	// public static BufferedImage createCompatibleImage(int width, int height) {
 	// return configuration.createCompatibleImage(width, height);
@@ -51,10 +50,11 @@ public class GraphicsUtil {
 	// return configuration.createCompatibleImage(width, height, Transparency.TRANSLUCENT);
 	// }
 
-	public static BufferedImage loadCompatibleImage(URL resource) throws IOException {
+	public static BufferedImage loadCompatibleImage (URL resource)
+			throws IOException {
 		BufferedImage image;
 		try {
-			image = Sanselan.getBufferedImage(resource.openStream());
+			image = Imaging.getBufferedImage(resource.openStream());
 		} catch (ImageReadException e) {
 			throw new IOException(e);
 		}
@@ -69,7 +69,8 @@ public class GraphicsUtil {
 	// return compatibleImage;
 	// }
 
-	public static BufferedImage createThumbnail(BufferedImage image, int requestedThumbSize) {
+	public static BufferedImage createThumbnail (BufferedImage image,
+			int requestedThumbSize) {
 		float ratio = (float) image.getWidth() / (float) image.getHeight();
 		int width = image.getWidth();
 		BufferedImage thumb = image;
@@ -80,9 +81,11 @@ public class GraphicsUtil {
 				width = requestedThumbSize;
 			}
 
-			BufferedImage temp = new BufferedImage(width, (int) (width / ratio), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage temp = new BufferedImage(width, (int) (width / ratio),
+					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = temp.createGraphics();
-			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2.drawImage(thumb, 0, 0, temp.getWidth(), temp.getHeight(), null);
 			g2.dispose();
 
@@ -92,7 +95,8 @@ public class GraphicsUtil {
 		return thumb;
 	}
 
-	public static BufferedImage createThumbnail(BufferedImage image, int newWidth, int newHeight) {
+	public static BufferedImage createThumbnail (BufferedImage image,
+			int newWidth, int newHeight) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		BufferedImage thumb = image;
@@ -112,9 +116,11 @@ public class GraphicsUtil {
 				}
 			}
 
-			BufferedImage temp = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+			BufferedImage temp = new BufferedImage(width, height,
+					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = temp.createGraphics();
-			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g2.drawImage(thumb, 0, 0, temp.getWidth(), temp.getHeight(), null);
 			g2.dispose();
 

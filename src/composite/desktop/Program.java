@@ -38,7 +38,7 @@ import org.apache.commons.imaging.ImageFormats;
 import org.apache.commons.imaging.ImageWriteException;
 import org.apache.commons.imaging.Imaging;
 
-import composite.BlendComposite;
+import composite.BlendComposite.BlendingMode;
 import composite.GraphicsUtil;
 
 /**
@@ -62,7 +62,7 @@ public class Program {
 				imageA.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2 = image.createGraphics();
 		g2.drawImage(imageA, 0, 0, null);
-		g2.setComposite(BlendComposite.ColorBurn);
+		g2.setComposite(BlendingMode.ColorBurn.get());
 		g2.drawImage(imageB, 0, 0, null);
 		g2.dispose();
 		OutputStream out = new FileOutputStream("image.png");

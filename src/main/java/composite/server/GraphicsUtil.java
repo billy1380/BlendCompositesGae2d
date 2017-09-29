@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2006 Romain Guy <romain.guy@mac.com>
+ * Copyright © 2017 WillShex Limited.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -25,7 +26,7 @@
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package composite;
+package composite.server;
 
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -55,6 +56,19 @@ public class GraphicsUtil {
 		BufferedImage image;
 		try {
 			image = Imaging.getBufferedImage(resource.openStream());
+
+			if (image.getType() != BufferedImage.TYPE_INT_ARGB) {
+				BufferedImage temp = new BufferedImage(image.getWidth(),
+						image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+				Graphics2D g2 = temp.createGraphics();
+				g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+				g2.drawImage(image, 0, 0, temp.getWidth(), temp.getHeight(),
+						null);
+				g2.dispose();
+
+				image = temp;
+			}
 		} catch (ImageReadException e) {
 			throw new IOException(e);
 		}
